@@ -1,20 +1,23 @@
 ﻿using System;
+using ChordDAL;
+using ChordBLL;
 
 namespace MusicalChordApplication;
 
 internal class Program
 {
     static string[] menuAction = { "[1]Add Chord",
-                                   "[2]Edit Chord",     
-                                   "[3]Delete Chord", 
-                                   "[4]Search Chord", 
+                                   "[2]Edit Chord",
+                                   "[3]Delete Chord",
+                                   "[4]Search Chord",
                                    "[5]Show All Chords",
-                                   "[6]Generate Chord Progression", 
+                                   "[6]Generate Chord Progression",
                                    "[7]Exit" };
+
+    static ChordManager chordManager = new ChordManager();
+
     static void Main(string[] args)
     {
-        List<string> listChordName = new List<string>();
-        List<string> listChordType = new List<string>();
 
         bool loop = true;
 
@@ -23,31 +26,39 @@ internal class Program
             DisplayMenuAction();
 
             Console.Write("Choose Action: ");
-            int userAction = Convert.ToInt32(Console.ReadLine());
+            string userInput = Console.ReadLine();
+
+            int userAction;
+
+            if (!int.TryParse(userInput, out userAction))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.\n");
+                continue;
+            }
 
             if (userAction == 0 || userAction > 7) Console.WriteLine("Error. Choose only from [1] to [7]\n");
 
-            switch (userAction)
+            switch ((MenuOptions)userAction)
             {
-                case 1:
-                    AddChord(listChordName, listChordType);
+                case MenuOptions.Add:
+                    AddChord();
                     break;
-                case 2:
-                    EditChord(listChordName, listChordType);
+                case MenuOptions.Edit:
+                    EditChord();
                     break;
-                case 3:
-                    DeleteChord(listChordName, listChordType);
+                case MenuOptions.Delete:
+                    DeleteChord();
                     break;
-                case 4:
-                    SearchChord(listChordName, listChordType);
+                case MenuOptions.Search:
+                    SearchChord();
                     break;
-                case 5:
-                    ListAllChord(listChordName, listChordType);
+                case MenuOptions.ViewAll:
+                    ListAllChord();
                     break;
-                case 6:
-                    GenerateChordProgression(listChordName, listChordType);
+                case MenuOptions.GenerateProgression:
+                    GenerateChordProgression();
                     break;
-                case 7:
+                case MenuOptions.Exit:
                     loop = false;
                     break;
             }
@@ -65,114 +76,115 @@ internal class Program
         }
     }
 
-    static void AddChord(List<string> chordNames, List<string> chordTypes)
+    static void AddChord()
     {
-        Console.Write("Enter Chord Name: ");
-        string name = Console.ReadLine().ToUpper();
-        Console.Write("Enter Chord Type: ");
-        string type = Console.ReadLine().ToUpper();
-        chordNames.Add(name);
-        chordTypes.Add(type);
-        Console.WriteLine("Chord Added Successfully!\n");
+        string name, type;
+        bool loop = true;
+
+        while (loop)
+        {
+            Console.Write("Enter Chord Name: ");
+            name = Console.ReadLine();
+
+            if (int.TryParse(name, out int input1))
+            {
+                Console.WriteLine("Invalid Input. Chord name cannot be a number.\n");
+                continue;
+            }
+
+            Console.Write("Enter Chord Type: ");
+            type = Console.ReadLine();
+
+            if (int.TryParse(type, out int input2))
+            {
+                Console.WriteLine("Invalid Input. Chord type cannot be a number.\n");
+                continue;
+            }
+
+            chordManager.AddChord(name, type);
+            loop = false;
+        }
+
     }
 
-    static void EditChord(List<string> chordNames, List<string> chordTypes)
+    static void EditChord()
     {
-        Console.Write("Enter Chord Name To Edit: ");
-        string oldName = Console.ReadLine().ToUpper();
+        string oldName, oldType, newName, newType;
+        bool loop = true;
 
-        int index = chordNames.IndexOf(oldName);
-        if (index != -1)
+        while (loop)
         {
+            Console.Write("Enter Chord Name To Edit: ");
+            oldName = Console.ReadLine();
+
+            if (int.TryParse(oldName, out int input1))
+            {
+                Console.WriteLine("Invalid input. Chord name cannot be a number.\n");
+                continue;
+            }
+
+            Console.Write("Enter Chord Type: ");
+            oldType = Console.ReadLine();
+
+            if (int.TryParse(oldType, out int input2))
+            {
+                Console.WriteLine("Invalid input. Chord type cannot be a number.\n");
+                continue;
+            }
+
             Console.Write("New Chord Name: ");
-            string newName = Console.ReadLine().ToUpper();
+            newName = Console.ReadLine();
+
+            if (int.TryParse(newName, out int input3))
+            {
+                Console.WriteLine("Invalid input. New chord name cannot be a number.\n");
+                continue;
+            }
+
             Console.Write("New Chord Type: ");
-            string newType = Console.ReadLine().ToUpper();
-            chordNames[index] = newName;
-            chordTypes[index] = newType;
-            Console.WriteLine("Chord Updated Successfully!\n");
+            newType = Console.ReadLine();
+
+            if (int.TryParse(newType, out _))
+            {
+                Console.WriteLine("Invalid input. New chord type cannot be a number.\n");
+                continue;
+            }
+
+            chordManager.EditChord(oldName, oldType, newName, newType);
+            loop = false;
         }
-        else
-        {
-            Console.WriteLine("Chord Not Found!\n");
-        }
+
     }
 
-    static void DeleteChord(List<string> chordNames, List<string> chordTypes)
+    static void DeleteChord()
     {
         Console.Write("Enter Chord Name To Delete: ");
-        string name = Console.ReadLine().ToUpper();
+        string name = Console.ReadLine();
+        Console.Write("Enter Chord type: ");
+        string type = Console.ReadLine();
 
-        int index = chordNames.IndexOf(name);
-        if (index != -1)
-        {
-            chordNames.RemoveAt(index);
-            chordTypes.RemoveAt(index);
-            Console.WriteLine("Chord Deleted Successfully!\n");
-        }
-        else
-        {
-            Console.WriteLine("Chord Not Found!\n");
-        }
+        chordManager.DeleteChord(name, type);
     }
 
-    static void SearchChord(List<string> chordNames, List<string> chordTypes)
+    static void SearchChord()
     {
         Console.Write("Enter Chord Name To Search: ");
-        string name = Console.ReadLine().ToUpper();
+        string name = Console.ReadLine();
+        Console.Write("Enter Chord Type To Search: ");
+        string type = Console.ReadLine();
 
-        int index = chordNames.IndexOf(name);
-        if (index != -1)
-        {
-            Console.WriteLine($"Chord Found: {chordNames[index]} - {chordTypes[index]}");
-        }
-        else
-        {
-            Console.WriteLine("Chord Not found!\n");
-        }
+        chordManager.SearchChord(name, type);
     }
 
-    static void ListAllChord(List<string> chordNames, List<string> chordTypes)
+    static void ListAllChord()
     {
-        if (chordNames.Count == 0)
-        {
-            Console.WriteLine("No Chords Available!\n");
-            return;
-        }
-
-        Console.WriteLine("List of All Chords:");
-        for (int i = 0; i < chordNames.Count; i++)
-        {
-            Console.WriteLine($"{chordNames[i]} ({chordTypes[i]})");
-        }
-        Console.WriteLine("");
+        chordManager.ListAllChords();
     }
 
-    static void GenerateChordProgression(List<string> chordNames, List<string> chordTypes)
+    static void GenerateChordProgression()
     {
-        if (chordNames.Count == 0)
-        {
-            Console.WriteLine("No Chords Available!\n");
-            return;
-        }
-        else if (chordNames.Count < 4)
-        {
-            Console.WriteLine("Not Enough Chords. Enter a Total of Four Chords!\n");
-            return;
-        }
-        else
-        {
-            Random randomChords = new Random();
 
-            Console.WriteLine("Chord Progression: ");
-
-            for (int i = 0; i < 4; i++)
-            {
-                int randomChordName = randomChords.Next(chordNames.Count);
-                Console.WriteLine("[" + chordNames[randomChordName] + "]");
-            }
-            Console.WriteLine("");
-        }
+        chordManager.GenerateProgression();
 
     }
 }
