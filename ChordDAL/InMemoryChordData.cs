@@ -11,10 +11,18 @@ namespace ChordDAL
     {
         private List<Chord> chords = new List<Chord>();
 
-        public List<Chord> GetAll() => chords;
+        public List<Chord> GetAll() 
+        {
+            return chords;
+        }
 
-        public void Add(Chord chord) => chords.Add(chord);
-
-        public void Save(List<Chord> chords) => this.chords = chords;
+        public void Add(Chord chord)
+        {
+            chords.Add(chord);
+        }
+        public void Save(List<Chord> chords)
+        {
+            this.chords = chords;
+        }
     }
 }
