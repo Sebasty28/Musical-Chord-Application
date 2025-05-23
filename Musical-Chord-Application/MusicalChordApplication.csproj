@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChordBLL\ChordBLL.csproj" />
+    <ProjectReference Include="..\ChordCommon\ChordCommon.csproj" />
     <ProjectReference Include="..\ChordDAL\ChordDAL.csproj" />
   </ItemGroup>
 

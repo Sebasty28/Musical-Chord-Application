@@ -6,7 +6,15 @@ namespace ChordDAL
 {
     public class ChordData
     {
-        private List<Chord> chords = new List<Chord>();
+
+        public List<Chord> chords = new List<Chord>();
+
+        public static IChordDataService Create()
+        {
+            //return new InMemoryChordData();
+            //return new TextFileChordData();
+            return new JsonChordData();
+        }
 
         public void AddChord(Chord chord)
         {

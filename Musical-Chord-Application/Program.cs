@@ -1,6 +1,6 @@
 ﻿using System;
-using ChordDAL;
 using ChordBLL;
+using ChordDAL;
 
 namespace MusicalChordApplication;
 
@@ -14,7 +14,8 @@ internal class Program
                                    "[6]Generate Chord Progression",
                                    "[7]Exit" };
 
-    static ChordManager chordManager = new ChordManager();
+    static IChordDataService chordDataService = ChordData.Create();
+    static ChordManager chordManager = new ChordManager(chordDataService);
 
     static void Main(string[] args)
     {
