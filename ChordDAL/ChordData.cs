@@ -13,7 +13,8 @@ namespace ChordDAL
         {
             //return new InMemoryChordData();
             //return new TextFileChordData();
-            return new JsonChordData();
+            //return new JsonChordData();
+            return new DBChordDataService();
         }
 
         public void AddChord(Chord chord)
