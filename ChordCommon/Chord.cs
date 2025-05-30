@@ -4,11 +4,13 @@
     {
         public string Name { get; set; }
         public string Type { get; set; }
+        public string Notes { get; set; }
 
-        public Chord(string name, string type)
+        public Chord(string name, string type, string notes)
         {
             Name = name.ToUpper();
             Type = type.ToUpper();
+            Notes = notes.ToUpper();
         }
 
 

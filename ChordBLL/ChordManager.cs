@@ -14,12 +14,12 @@ namespace ChordBLL
             chordData = chordDataService;
         }
 
-        public void AddChord(string name, string type)
+        public void AddChord(string name, string type, string notes)
         {
             bool exists = false;
             foreach (Chord c in chordData.GetAll())
             {
-                if (c.Name == name.ToUpper() && c.Type == type.ToUpper())
+                if (c.Name == name.ToUpper() && c.Type == type.ToUpper() && c.Notes == notes.ToUpper())
                 {
                     exists = true;
                     break;
@@ -32,7 +32,7 @@ namespace ChordBLL
                 return;
             }
 
-            chordData.Add(new Chord(name, type));
+            chordData.Add(new Chord(name, type, notes));
             Console.WriteLine("Chord added successfully!\n");
         }
 
@@ -141,5 +141,72 @@ namespace ChordBLL
                 Console.WriteLine(allChords[index]);
             }
         }
+
+        public string GenerateChordNotes(string root, string type)
+        {
+            string[] sharpNotes = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+            string[] flatNotes = { "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" };
+
+            int rootIndex = -1;
+            string[] selectedNotes = sharpNotes;
+
+            for (int i = 0; i < 12; i++)
+            {
+                if (sharpNotes[i] == root)
+                {
+                    rootIndex = i;
+                    selectedNotes = sharpNotes;
+                    break;
+                }
+                else if (flatNotes[i] == root)
+                {
+                    rootIndex = i;
+                    selectedNotes = flatNotes;
+                    break;
+                }
+            }
+
+            if (rootIndex == -1)
+                return "Unknown chord";
+
+            List<int> intervals;
+
+            switch (type.ToLower())
+            {
+                case "major":
+                    intervals = new List<int> { 0, 4, 7 }; // root, major third, perfect fifth
+                    break;
+                case "minor":
+                    intervals = new List<int> { 0, 3, 7 }; // root, minor third, perfect fifth
+                    break;
+                case "7":
+                    intervals = new List<int> { 0, 4, 7, 10 }; // dominant 7th
+                    break;
+                case "min7":
+                    intervals = new List<int> { 0, 3, 7, 10 }; // minor 7th
+                    break;
+                case "maj7":
+                    intervals = new List<int> { 0, 4, 7, 11 }; // major 7th
+                    break;
+                case "sus2":
+                    intervals = new List<int> { 0, 2, 7 }; // root, major 2nd, perfect fifth
+                    break;
+                case "sus4":
+                    intervals = new List<int> { 0, 5, 7 }; // root, perfect 4th, perfect fifth
+                    break;
+                default:
+                    return "Unknown chord type";
+            }
+
+            List<string> chordNotes = new List<string>();
+            foreach (int interval in intervals)
+            {
+                int noteIndex = (rootIndex + interval) % 12;
+                chordNotes.Add(selectedNotes[noteIndex]);
+            }
+
+            return string.Join("-", chordNotes);
+        }
+
     }
 }

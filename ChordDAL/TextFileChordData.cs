@@ -16,12 +16,12 @@ namespace ChordDAL
                 foreach (var line in File.ReadAllLines(filePath))
                 {
                     var parts = line.Split('|');
-                    chords.Add(new Chord(parts[0], parts[1]));
+                    chords.Add(new Chord(parts[0], parts[1], parts[2]));
                 }
             }
             return chords;
         }
-
+        
         public void Add(Chord chord)
         {
             var line = $"{chord.Name}|{chord.Type}";

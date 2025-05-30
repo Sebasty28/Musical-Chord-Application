@@ -79,7 +79,7 @@ internal class Program
 
     static void AddChord()
     {
-        string name, type;
+        string name, type, notes;
         bool loop = true;
 
         while (loop)
@@ -102,7 +102,9 @@ internal class Program
                 continue;
             }
 
-            chordManager.AddChord(name, type);
+            notes = chordManager.GenerateChordNotes(name, type);
+
+            chordManager.AddChord(name, type, notes);
             loop = false;
         }
 
