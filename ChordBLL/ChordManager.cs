@@ -7,17 +7,13 @@ namespace ChordBLL
 {
     public class ChordManager
     {
-        private IChordDataService chordData;
-
-        public ChordManager(IChordDataService chordDataService)
-        {
-            chordData = chordDataService;
-        }
+        ChordData chordData = new ChordData();
 
         public void AddChord(string name, string type, string notes)
         {
+            List<Chord> allChords = chordData.GetAllChords();
             bool exists = false;
-            foreach (Chord c in chordData.GetAll())
+            foreach (Chord c in allChords)
             {
                 if (c.Name == name.ToUpper() && c.Type == type.ToUpper() && c.Notes == notes.ToUpper())
                 {
@@ -32,20 +28,20 @@ namespace ChordBLL
                 return;
             }
 
-            chordData.Add(new Chord(name, type, notes));
+            chordData.AddChord(new Chord(name, type, notes));
             Console.WriteLine("Chord added successfully!\n");
         }
 
         public void EditChord(string oldName, string oldType, string newName, string newType)
         {
+            List<Chord> allChords = chordData.GetAllChords();
             Chord chordToEdit = null;
-            List<Chord> chords = chordData.GetAll();
 
-            foreach (Chord c in chords)
+            foreach (Chord c in allChords)
             {
-                if (c.Name == oldName.ToUpper() && c.Type == oldType.ToUpper())
+                if (c.Name.ToUpper() == oldName.ToUpper() && c.Type.ToUpper() == oldType.ToUpper())
                 {
-                    chordToEdit = c;
+                    chordToEdit = new Chord(newName.ToUpper(), newType.ToUpper(), c.Notes);
                     break;
                 }
             }
@@ -55,21 +51,18 @@ namespace ChordBLL
                 Console.WriteLine("Chord not found!\n");
                 return;
             }
-
-            chordToEdit.Name = newName.ToUpper();
-            chordToEdit.Type = newType.ToUpper();
-            chordData.Save(chords);
+            chordData.EditChord(chordToEdit);
             Console.WriteLine("Chord updated successfully!\n");
         }
 
         public void DeleteChord(string name, string type)
         {
-            List<Chord> chords = chordData.GetAll();
+            List<Chord> allChords = chordData.GetAllChords();
             Chord chordToDelete = null;
 
-            foreach (Chord c in chords)
+            foreach (Chord c in allChords)
             {
-                if (c.Name == name.ToUpper() && c.Type == type.ToUpper())
+                if (c.Name.ToUpper() == name.ToUpper() && c.Type.ToUpper() == type.ToUpper())
                 {
                     chordToDelete = c;
                     break;
@@ -78,9 +71,15 @@ namespace ChordBLL
 
             if (chordToDelete != null)
             {
-                chords.Remove(chordToDelete);
-                chordData.Save(chords);
-                Console.WriteLine("Chord deleted successfully!\n");
+                bool removed = chordData.RemoveChord(chordToDelete);
+                if (removed)
+                {
+                    Console.WriteLine("Chord deleted successfully!\n");
+                }
+                else
+                {
+                    Console.WriteLine("Chord could not be deleted!\n");
+                }
             }
             else
             {
@@ -90,10 +89,10 @@ namespace ChordBLL
 
         public void SearchChord(string name, string type)
         {
-            List<Chord> chords = chordData.GetAll();
+            List<Chord> allChords = chordData.GetAllChords();
             Chord foundChord = null;
 
-            foreach (Chord c in chords)
+            foreach (Chord c in allChords)
             {
                 if (c.Name == name.ToUpper() && c.Type == type.ToUpper())
                 {
@@ -110,7 +109,7 @@ namespace ChordBLL
 
         public void ListAllChords()
         {
-            var allChords = chordData.GetAll();
+            var allChords = chordData.GetAllChords();
             if (allChords.Count == 0)
             {
                 Console.WriteLine("No chords available.\n");
@@ -126,7 +125,7 @@ namespace ChordBLL
 
         public void GenerateProgression()
         {
-            var allChords = chordData.GetAll();
+            var allChords = chordData.GetAllChords();
             if (allChords.Count < 4)
             {
                 Console.WriteLine("Not enough chords to generate a progression.\n");

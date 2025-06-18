@@ -6,21 +6,21 @@ using ChordCommon;
 
 namespace ChordDAL
 {
-    internal class DBChordDataService : IChordDataService
+    public class DBChordDataService : IChordDataService
     {
-        // Connection string
         private static string connectionString =
             "Data Source=DESKTOP-IUD9FSK\\SQLEXPRESS;Initial Catalog=MusicalChordApp;Integrated Security=True;TrustServerCertificate=True;";
 
         public void Add(Chord chord)
         {
-            string insertStatement = "INSERT INTO ChordDetails (ChordName, ChordType) VALUES (@ChordName, @ChordType)";
+            string insertStatement = "INSERT INTO ChordDetails (ChordName, ChordType, Notes) VALUES (@ChordName, @ChordType, @Notes)";
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             using (SqlCommand insertCommand = new SqlCommand(insertStatement, sqlConnection))
             {
                 insertCommand.Parameters.AddWithValue("@ChordName", chord.Name);
                 insertCommand.Parameters.AddWithValue("@ChordType", chord.Type);
+                insertCommand.Parameters.AddWithValue("@Notes", chord.Notes);
 
                 sqlConnection.Open();
                 insertCommand.ExecuteNonQuery();
@@ -29,7 +29,7 @@ namespace ChordDAL
 
         public List<Chord> GetAll()
         {
-            string selectStatement = "SELECT ChordName, ChordType FROM ChordDetails";
+            string selectStatement = "SELECT ChordName, ChordType, Notes FROM ChordDetails";
 
             var chords = new List<Chord>();
 
@@ -43,7 +43,7 @@ namespace ChordDAL
                     {
                         var name = reader["ChordName"].ToString();
                         var type = reader["ChordType"].ToString();
-                        var notes = reader["ChordType"].ToString();
+                        var notes = reader["Notes"].ToString();
                         chords.Add(new Chord(name, type, notes));
                     }
                 }
@@ -52,30 +52,34 @@ namespace ChordDAL
             return chords;
         }
 
-        public void Remove(Chord chord)
+        public bool Delete(Chord chord)
         {
-            string deleteStatement = "DELETE FROM ChordDetails WHERE ChordName = @ChordName";
+            string deleteStatement = "DELETE FROM ChordDetails WHERE ChordName = @ChordName AND ChordType = @ChordType";
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             using (SqlCommand deleteCommand = new SqlCommand(deleteStatement, sqlConnection))
             {
                 deleteCommand.Parameters.AddWithValue("@ChordName", chord.Name);
+                deleteCommand.Parameters.AddWithValue("@ChordType", chord.Type);
 
                 sqlConnection.Open();
-                deleteCommand.ExecuteNonQuery();
+                int rowsAffected = deleteCommand.ExecuteNonQuery();
+
+                return rowsAffected > 0;
             }
         }
 
-        public void UpdateAccount(Chord chord)
+        public void Edit(Chord chord)
         {
             string updateStatement =
-                "UPDATE ChordDetails SET ChordType = @ChordType WHERE ChordName = @ChordName";
+                "UPDATE ChordDetails SET Notes = @Notes WHERE ChordName = @ChordName AND ChordType = @ChordType";
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             using (SqlCommand updateCommand = new SqlCommand(updateStatement, sqlConnection))
             {
                 updateCommand.Parameters.AddWithValue("@ChordName", chord.Name);
                 updateCommand.Parameters.AddWithValue("@ChordType", chord.Type);
+                updateCommand.Parameters.AddWithValue("@Notes", chord.Notes);
 
                 sqlConnection.Open();
                 updateCommand.ExecuteNonQuery();
@@ -84,9 +88,29 @@ namespace ChordDAL
 
         public void Save(List<Chord> chords)
         {
-            foreach (var chord in chords)
+            // Simplest implementation: delete all and re-insert.
+            string deleteAllStatement = "DELETE FROM ChordDetails";
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                Add(chord);
+                sqlConnection.Open();
+
+                using (SqlCommand deleteCommand = new SqlCommand(deleteAllStatement, sqlConnection))
+                {
+                    deleteCommand.ExecuteNonQuery();
+                }
+
+                foreach (var chord in chords)
+                {
+                    using (SqlCommand insertCommand = new SqlCommand(
+                        "INSERT INTO ChordDetails (ChordName, ChordType, Notes) VALUES (@ChordName, @ChordType, @Notes)", sqlConnection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@ChordName", chord.Name);
+                        insertCommand.Parameters.AddWithValue("@ChordType", chord.Type);
+                        insertCommand.Parameters.AddWithValue("@Notes", chord.Notes);
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
             }
         }
     }

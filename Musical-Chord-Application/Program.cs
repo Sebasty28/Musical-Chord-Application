@@ -1,6 +1,5 @@
 ﻿using System;
 using ChordBLL;
-using ChordDAL;
 
 namespace MusicalChordApplication;
 
@@ -14,8 +13,7 @@ internal class Program
                                    "[6]Generate Chord Progression",
                                    "[7]Exit" };
 
-    static IChordDataService chordDataService = ChordData.Create();
-    static ChordManager chordManager = new ChordManager(chordDataService);
+    static ChordManager chordManager = new ChordManager();
 
     static void Main(string[] args)
     {
@@ -95,12 +93,6 @@ internal class Program
 
             Console.Write("Enter Chord Type: ");
             type = Console.ReadLine();
-
-            if (int.TryParse(type, out int input2))
-            {
-                Console.WriteLine("Invalid Input. Chord type cannot be a number.\n");
-                continue;
-            }
 
             notes = chordManager.GenerateChordNotes(name, type);
 

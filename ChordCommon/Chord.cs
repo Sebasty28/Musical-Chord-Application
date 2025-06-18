@@ -13,10 +13,10 @@
             Notes = notes.ToUpper();
         }
 
-
         public override string ToString()
         {
-            return Name + " (" + Type + ")\n";
+            return Name + " (" + Type + ") " + Notes + "\n";
         }
+
     }
 }

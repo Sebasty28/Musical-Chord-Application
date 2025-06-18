@@ -6,55 +6,40 @@ namespace ChordDAL
 {
     public class ChordData
     {
+        IChordDataService chordDataService;
 
-        public List<Chord> chords = new List<Chord>();
-
-        public static IChordDataService Create()
+        public ChordData()
         {
-            //return new InMemoryChordData();
-            //return new TextFileChordData();
-            //return new JsonChordData();
-            return new DBChordDataService();
-        }
-
-        public void AddChord(Chord chord)
-        {
-            chords.Add(chord);
+            //chordDataService = new InMemoryChordData();
+            //chordDataService = new TextFileChordData();
+            //chordDataService = new TextFileChordData();
+            //chordDataService = new DBChordDataService();
         }
 
         public List<Chord> GetAllChords()
         {
-            return chords;
+            return chordDataService.GetAll();
         }
 
-        public List<Chord> GetChords()
+        public void AddChord(Chord chord)
         {
-            return chords;
+            chordDataService.Add(chord);
         }
 
-        public Chord SearchChord(string name, string type)
+        public void EditChord(Chord chord)
         {
-            foreach (Chord chord in chords)
-            {
-                if (chord.Name.ToUpper() == name.ToUpper() &&
-                    chord.Type.ToUpper() == type.ToUpper())
-                {
-                    return chord;
-                }
-            }
-            return null;
-
+            chordDataService.Edit(chord);
         }
 
-        public bool RemoveChord(string name, string type)
+        public bool RemoveChord(Chord chord)
         {
-            var chord = SearchChord(name, type);
-            if (chord != null)
-            {
-                chords.Remove(chord);
-                return true;
-            }
-            return false;
+           return chordDataService.Delete(chord);
         }
+
+        public void SaveChords(List<Chord> chords)
+        {
+            chordDataService.Save(chords);
+        }
+
     }
 }
