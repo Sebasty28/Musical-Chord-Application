@@ -12,7 +12,7 @@ namespace ChordDAL
         {
             //chordDataService = new InMemoryChordData();
             //chordDataService = new TextFileChordData();
-            //chordDataService = new TextFileChordData();
+            chordDataService = new JsonChordData();
             //chordDataService = new DBChordDataService();
         }
 
@@ -26,9 +26,9 @@ namespace ChordDAL
             chordDataService.Add(chord);
         }
 
-        public void EditChord(Chord chord)
+        public void EditChord(Chord oldChord, Chord updatedChord)
         {
-            chordDataService.Edit(chord);
+            chordDataService.Edit(oldChord, updatedChord);
         }
 
         public bool RemoveChord(Chord chord)

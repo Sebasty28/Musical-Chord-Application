@@ -18,14 +18,17 @@ namespace ChordDAL
             chords.Add(chord);
         }
 
-        public void Edit(Chord chord)
+        public void Edit(Chord oldChord, Chord updatedChord)
         {
             for (int i = 0; i < chords.Count; i++)
             {
-                if (chords[i].Name.ToUpper() == chord.Name.ToUpper() &&
-                    chords[i].Type.ToUpper() == chord.Type.ToUpper())
+                if (chords[i].Name.ToUpper() == oldChord.Name.ToUpper() &&
+                    chords[i].Type.ToUpper() == oldChord.Type.ToUpper() &&
+                    chords[i].Notes.ToUpper() == oldChord.Notes.ToUpper())
                 {
-                    chords[i].Notes = chord.Notes;
+                    chords[i].Name = updatedChord.Name;
+                    chords[i].Type = updatedChord.Type;
+                    chords[i].Notes = updatedChord.Notes;
                     break;
                 }
             }

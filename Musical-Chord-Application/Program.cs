@@ -80,26 +80,54 @@ internal class Program
         string name, type, notes;
         bool loop = true;
 
+        string[] validRoots = { "A", "A#", "Bb", "B", "C", "C#", "Db",
+                                "D", "D#", "Eb", "E", "F", "F#", "Gb",
+                                "G", "G#", "Ab"};
+
         while (loop)
         {
             Console.Write("Enter Chord Name: ");
-            name = Console.ReadLine();
+            name = Console.ReadLine().Trim();
 
-            if (int.TryParse(name, out int input1))
+            if (int.TryParse(name, out int input))
             {
-                Console.WriteLine("Invalid Input. Chord name cannot be a number.\n");
+                Console.WriteLine("Invalid input. Chord name cannot be a number.\n");
+                continue;
+            }
+
+            bool isValidRoot = false;
+            foreach (string root in validRoots)
+            {
+                if (root.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    isValidRoot = true;
+                    break;
+                }
+            }
+
+            if (!isValidRoot)
+            {
+                Console.WriteLine("Invalid chord name. Use A to G with optional # or b (e.g., C, F#, Bb).\n");
                 continue;
             }
 
             Console.Write("Enter Chord Type: ");
-            type = Console.ReadLine();
+            type = Console.ReadLine().Trim();
 
-            notes = chordManager.GenerateChordNotes(name, type);
+            string formattedName = name.ToUpper();
+            string formattedType = type.ToLower();
 
-            chordManager.AddChord(name, type, notes);
+            notes = chordManager.GenerateChordNotes(formattedName, formattedType);
+
+            if (notes == "Unknown chord" || notes == "Unknown chord type")
+            {
+                Console.WriteLine("Invalid chord type or name. Please try again.\n");
+                continue;
+            }
+
+            chordManager.AddChord(formattedName, formattedType, notes);
             loop = false;
         }
-
     }
 
     static void EditChord()
@@ -121,12 +149,6 @@ internal class Program
             Console.Write("Enter Chord Type: ");
             oldType = Console.ReadLine();
 
-            if (int.TryParse(oldType, out int input2))
-            {
-                Console.WriteLine("Invalid input. Chord type cannot be a number.\n");
-                continue;
-            }
-
             Console.Write("New Chord Name: ");
             newName = Console.ReadLine();
 
@@ -138,12 +160,6 @@ internal class Program
 
             Console.Write("New Chord Type: ");
             newType = Console.ReadLine();
-
-            if (int.TryParse(newType, out _))
-            {
-                Console.WriteLine("Invalid input. New chord type cannot be a number.\n");
-                continue;
-            }
 
             chordManager.EditChord(oldName, oldType, newName, newType);
             loop = false;
@@ -178,10 +194,9 @@ internal class Program
 
     static void GenerateChordProgression()
     {
-
         chordManager.GenerateProgression();
-
     }
+
 }
 
 

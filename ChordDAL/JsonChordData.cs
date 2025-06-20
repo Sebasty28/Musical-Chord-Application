@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ChordCommon;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using ChordCommon;
 
 namespace ChordDAL
 {
@@ -19,13 +20,28 @@ namespace ChordDAL
         {
             if (File.Exists(filePath))
             {
-                string json = File.ReadAllText(filePath);
-                chords = JsonSerializer.Deserialize<List<Chord>>(json, new JsonSerializerOptions
+                string jsonText = File.ReadAllText(filePath);
+
+                List<Chord> loadedChords = JsonSerializer.Deserialize<List<Chord>>(jsonText, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
-                }) ?? new List<Chord>();
+                });
+
+                if (loadedChords != null)
+                {
+                    chords = loadedChords;
+                }
+                else
+                {
+                    chords = new List<Chord>();
+                }
+            }
+            else
+            {
+                chords = new List<Chord>();
             }
         }
+
 
         private void WriteToFile()
         {
@@ -47,14 +63,15 @@ namespace ChordDAL
             WriteToFile();
         }
 
-        public void Edit(Chord chord)
+        public void Edit(Chord oldChord, Chord updatedChord)
         {
             for (int i = 0; i < chords.Count; i++)
             {
-                if (chords[i].Name.ToUpper() == chord.Name.ToUpper() &&
-                    chords[i].Type.ToUpper() == chord.Type.ToUpper())
+                if (chords[i].Name.ToUpper() == oldChord.Name.ToUpper() &&
+                    chords[i].Type.ToUpper() == oldChord.Type.ToUpper() &&
+                    chords[i].Notes.ToUpper() == oldChord.Notes.ToUpper())   
                 {
-                    chords[i] = chord;
+                    chords[i] = updatedChord;
                     WriteToFile();
                     break;
                 }

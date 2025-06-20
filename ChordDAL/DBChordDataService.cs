@@ -69,17 +69,22 @@ namespace ChordDAL
             }
         }
 
-        public void Edit(Chord chord)
+        public void Edit(Chord oldChord, Chord updatedChord)
         {
             string updateStatement =
-                "UPDATE ChordDetails SET Notes = @Notes WHERE ChordName = @ChordName AND ChordType = @ChordType";
+                "UPDATE ChordDetails " +
+                "SET ChordName = @NewChordName, ChordType = @NewChordType, Notes = @NewNotes " +
+                "WHERE ChordName = @OldChordName AND ChordType = @OldChordType";
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             using (SqlCommand updateCommand = new SqlCommand(updateStatement, sqlConnection))
             {
-                updateCommand.Parameters.AddWithValue("@ChordName", chord.Name);
-                updateCommand.Parameters.AddWithValue("@ChordType", chord.Type);
-                updateCommand.Parameters.AddWithValue("@Notes", chord.Notes);
+                updateCommand.Parameters.AddWithValue("@NewChordName", updatedChord.Name);
+                updateCommand.Parameters.AddWithValue("@NewChordType", updatedChord.Type);
+                updateCommand.Parameters.AddWithValue("@NewNotes", updatedChord.Notes);
+
+                updateCommand.Parameters.AddWithValue("@OldChordName", oldChord.Name);
+                updateCommand.Parameters.AddWithValue("@OldChordType", oldChord.Type);
 
                 sqlConnection.Open();
                 updateCommand.ExecuteNonQuery();
@@ -88,7 +93,6 @@ namespace ChordDAL
 
         public void Save(List<Chord> chords)
         {
-            // Simplest implementation: delete all and re-insert.
             string deleteAllStatement = "DELETE FROM ChordDetails";
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))

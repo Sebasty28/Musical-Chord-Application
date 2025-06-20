@@ -72,12 +72,12 @@ namespace ChordDAL
             WriteToFile();
         }
 
-        public void Edit(Chord chord)
+        public void Edit(Chord oldChord, Chord updatedChord)
         {
-            int index = FindChordIndex(chord);
+            int index = FindChordIndex(oldChord);
             if (index != -1)
             {
-                chords[index] = chord;
+                chords[index] = updatedChord;
                 WriteToFile();
             }
         }

@@ -11,7 +11,7 @@ namespace ChordDAL
     {
         public List<Chord> GetAll();
         public void Add(Chord chord);
-        public void Edit(Chord chord);
+        public void Edit(Chord oldChord, Chord updatedChord);
         public bool Delete(Chord chord);
         public void Save(List<Chord> chords);
 
