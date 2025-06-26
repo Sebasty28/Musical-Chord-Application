@@ -59,7 +59,8 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "StartDashboard";
-            Text = "Musical Chord App";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Musical Chord Application";
             ResumeLayout(false);
         }
 

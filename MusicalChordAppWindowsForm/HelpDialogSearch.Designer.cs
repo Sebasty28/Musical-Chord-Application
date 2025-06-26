@@ -48,10 +48,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(562, 102);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "HelpDialogSearch";
-            Text = "HelpDialogSearch";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Help [?]";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }

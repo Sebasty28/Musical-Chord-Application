@@ -10,13 +10,13 @@ namespace MusicalChordAppAPI.Controllers
     {
         ChordManager chordManager = new ChordManager();
 
-        [HttpGet]
+        [HttpGet("View")]
         public List<Chord> GetAllChords()
         {
             return chordManager.GetAllChords();
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public bool AddChord(Chord chord)
         {
             string notes = chordManager.GenerateChordNotes(chord.Name, chord.Type);
@@ -34,7 +34,7 @@ namespace MusicalChordAppAPI.Controllers
             return chordManager.EditChord(oldName, oldType, newName, newType, out updatedNotes);
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete")]
         public bool DeleteChord(string name, string type)
         {
             return chordManager.DeleteChord(name, type);
