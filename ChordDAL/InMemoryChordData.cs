@@ -41,15 +41,15 @@ namespace ChordDAL
                 if (chords[i].Name.ToUpper() == chord.Name.ToUpper() &&
                     chords[i].Type.ToUpper() == chord.Type.ToUpper())
                 {
-                    List<Chord> another = new List<Chord>();
+                    List<Chord> listChord = new List<Chord>();
                     for (int j = 0; j < chords.Count; j++)
                     {
                         if (j != i)
                         {
-                            another.Add(chords[j]);
+                            listChord.Add(chords[j]);
                         }
                     }
-                    chords = another;
+                    chords = listChord;
                     return true;
                 }
             }

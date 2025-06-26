@@ -22,29 +22,38 @@ namespace ChordDAL
             if (!File.Exists(filePath))
                 return;
 
-            var lines = File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(filePath);
 
-            foreach (var line in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
-                var parts = line.Split('|');
+                string line = lines[i];
+                string[] parts = line.Split('|');
+
                 if (parts.Length >= 2)
                 {
-                    var name = parts[0];
-                    var type = parts[1];
-                    var notes = parts.Length >= 3 ? parts[2] : string.Empty;
+                    string name = parts[0];
+                    string type = parts[1];
+                    string notes = parts.Length >= 3 ? parts[2] : "";
 
-                    chords.Add(new Chord(name, type, notes));
+                    Chord chord = new Chord(name, type, notes);
+                    chords.Add(chord);
                 }
             }
         }
 
         private void WriteToFile()
         {
-            var lines = new string[chords.Count];
+            string[] lines = new string[chords.Count];
+
             for (int i = 0; i < chords.Count; i++)
             {
-                lines[i] = $"{chords[i].Name}|{chords[i].Type}|{chords[i].Notes}";
+                string name = chords[i].Name;
+                string type = chords[i].Type;
+                string notes = chords[i].Notes;
+
+                lines[i] = string.Concat(name, "|", type, "|", notes);
             }
+
             File.WriteAllLines(filePath, lines);
         }
 
@@ -52,12 +61,17 @@ namespace ChordDAL
         {
             for (int i = 0; i < chords.Count; i++)
             {
-                if (chords[i].Name.Equals(chord.Name, StringComparison.OrdinalIgnoreCase) &&
-                    chords[i].Type.Equals(chord.Type, StringComparison.OrdinalIgnoreCase))
+                string name1 = chords[i].Name.ToUpper();
+                string type1 = chords[i].Type.ToUpper();
+                string name2 = chord.Name.ToUpper();
+                string type2 = chord.Type.ToUpper();
+
+                if (name1 == name2 && type1 == type2)
                 {
                     return i;
                 }
             }
+
             return -1;
         }
 
