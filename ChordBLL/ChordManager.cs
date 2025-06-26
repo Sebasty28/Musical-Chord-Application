@@ -48,6 +48,20 @@ namespace ChordBLL
             if (originalChord == null)
                 return false;
 
+            for (int i = 0; i < allChords.Count; i++)
+            {
+                Chord c = allChords[i];
+                if (c.Name.ToUpper() == newName.ToUpper() &&
+                    c.Type.ToLower() == newType.ToLower())
+                {
+                    if (c != originalChord)
+                    {
+                        updatedNotes = null;
+                        return false; //If chord already exists
+                    }
+                }
+            }
+
             updatedNotes = GenerateChordNotes(newName.ToUpper(), newType.ToLower());
             Chord updatedChord = new Chord(newName.ToUpper(), newType.ToLower(), updatedNotes.ToUpper());
             chordData.EditChord(originalChord, updatedChord);
