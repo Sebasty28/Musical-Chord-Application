@@ -104,7 +104,7 @@ namespace MusicalChordAppWindowsForm
             string chordName = textBox_ChordName.Text.Trim();
             string chordType = textBox_ChordType.Text.Trim();
 
-            if (!IsValidInput(chordName) || !string.IsNullOrWhiteSpace(chordType))
+            if (!IsValidInput(chordName) || string.IsNullOrWhiteSpace(chordType))
             {
                 MessageBox.Show("Chord name and type cannot be empty, numeric, or spaces.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -140,7 +140,7 @@ namespace MusicalChordAppWindowsForm
             string newName = textBox_NewChordName.Text.Trim();
             string newType = textBox_NewChordType.Text.Trim();
 
-            if (!IsValidInput(oldName) || !string.IsNullOrWhiteSpace(oldType) || !IsValidInput(newName) || !string.IsNullOrWhiteSpace(newType))
+            if (!IsValidInput(oldName) || string.IsNullOrWhiteSpace(oldType) || !IsValidInput(newName) || string.IsNullOrWhiteSpace(newType))
             {
                 MessageBox.Show("Chord names and types must not be empty, numeric, or whitespace.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -165,7 +165,7 @@ namespace MusicalChordAppWindowsForm
             string name = textBox_ChordName.Text.Trim();
             string type = textBox_ChordType.Text.Trim();
 
-            if (!IsValidInput(name) || !IsValidInput(type))
+            if (!IsValidInput(name) || string.IsNullOrWhiteSpace(type))
             {
                 MessageBox.Show("Chord name and type cannot be empty, numeric, or whitespace.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -230,7 +230,7 @@ namespace MusicalChordAppWindowsForm
             string name = textBox_ChordName.Text.Trim();
             string type = textBox_ChordType.Text.Trim();
 
-            if (!IsValidInput(name) || !IsValidInput(type))
+            if (!IsValidInput(name) || string.IsNullOrWhiteSpace(type))
             {
                 MessageBox.Show("Chord name and type cannot be empty, numeric, or whitespace.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
