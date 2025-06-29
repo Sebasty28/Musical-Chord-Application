@@ -104,7 +104,7 @@ namespace MusicalChordAppWindowsForm
             string chordName = textBox_ChordName.Text.Trim();
             string chordType = textBox_ChordType.Text.Trim();
 
-            if (!IsValidInput(chordName) || !IsValidInput(chordType))
+            if (!IsValidInput(chordName) || !string.IsNullOrWhiteSpace(chordType))
             {
                 MessageBox.Show("Chord name and type cannot be empty, numeric, or spaces.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -140,7 +140,7 @@ namespace MusicalChordAppWindowsForm
             string newName = textBox_NewChordName.Text.Trim();
             string newType = textBox_NewChordType.Text.Trim();
 
-            if (!IsValidInput(oldName) || !IsValidInput(oldType) || !IsValidInput(newName) || !IsValidInput(newType))
+            if (!IsValidInput(oldName) || !string.IsNullOrWhiteSpace(oldType) || !IsValidInput(newName) || !string.IsNullOrWhiteSpace(newType))
             {
                 MessageBox.Show("Chord names and types must not be empty, numeric, or whitespace.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
