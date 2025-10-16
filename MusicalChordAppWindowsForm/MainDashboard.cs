@@ -249,5 +249,9 @@ namespace MusicalChordAppWindowsForm
             }
         }
 
+        private void buttonEmail_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

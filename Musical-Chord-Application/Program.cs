@@ -288,6 +288,9 @@ namespace MusicalChordApplication
                 Console.WriteLine(chordProgression[i]);
             }
             Console.WriteLine();
+
+            chordManager.SendChordProgression(chordProgression);
+            Console.WriteLine("An Email also has been sent!");
         }
 
         static bool IsInvalidInput(string input)

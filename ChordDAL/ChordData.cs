@@ -12,8 +12,8 @@ namespace ChordDAL
         {
             //chordDataService = new InMemoryChordData();
             //chordDataService = new TextFileChordData();
-            chordDataService = new JsonChordData();
-            //chordDataService = new DBChordDataService();
+            //chordDataService = new JsonChordData();
+            chordDataService = new DBChordDataService();
         }
 
         public List<Chord> GetAllChords()

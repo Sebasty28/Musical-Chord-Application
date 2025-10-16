@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Sql;
 using Microsoft.Data.SqlClient;
 using ChordCommon;
 
@@ -9,7 +9,7 @@ namespace ChordDAL
     public class DBChordDataService : IChordDataService
     {
         private static string connectionString =
-            "Data Source=DESKTOP-IUD9FSK\\SQLEXPRESS;Initial Catalog=MusicalChordApp;Integrated Security=True;TrustServerCertificate=True;";
+            "Data Source=DESKTOP-1I06Q5L\\SQLEXPRESS;Initial Catalog=MusicalChordApp;Integrated Security=True;TrustServerCertificate=True;";
 
         public void Add(Chord chord)
         {

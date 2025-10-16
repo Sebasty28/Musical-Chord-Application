@@ -258,5 +258,29 @@ namespace ChordBLL
 
             return result;
         }
+
+        public bool SendChordProgression(List<Chord> progression)
+        {
+            if (progression == null || progression.Count == 0)
+                return false;
+
+            string progressionText = "";
+            for (int i = 0; i < progression.Count; i++)
+            {
+                var chord = progression[i];
+                progressionText += chord.Name + " (" + chord.Type + ") " + chord.Notes + "\n";
+            }
+
+            string body =
+                "Generated Chord Progression:\n\n" +
+                progressionText +
+                "\nThis progression was created by the Musical Chord Application.";
+
+            ChordEmail email = new ChordEmail();
+            email.SendEmail("user@examplemail.com", "Generated Chord Progression", body);
+
+            return true;
+        }
+
     }
 }

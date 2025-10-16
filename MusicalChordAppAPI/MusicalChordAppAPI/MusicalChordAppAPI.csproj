@@ -13,13 +13,13 @@
 
   <ItemGroup>
     <Reference Include="ChordBLL">
-      <HintPath>..\..\Musical-Chord-Application\ChordBLL\bin\Debug\net8.0\ChordBLL.dll</HintPath>
+      <HintPath>..\..\ChordBLL\bin\Debug\net8.0\ChordBLL.dll</HintPath>
     </Reference>
     <Reference Include="ChordCommon">
-      <HintPath>..\..\Musical-Chord-Application\ChordBLL\bin\Debug\net8.0\ChordCommon.dll</HintPath>
+      <HintPath>..\..\ChordBLL\bin\Debug\net8.0\ChordCommon.dll</HintPath>
     </Reference>
     <Reference Include="ChordDAL">
-      <HintPath>..\..\Musical-Chord-Application\ChordBLL\bin\Debug\net8.0\ChordDAL.dll</HintPath>
+      <HintPath>..\..\ChordBLL\bin\Debug\net8.0\ChordDAL.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -60,12 +60,13 @@
             labelEdit = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
+            labelViewAll = new Label();
+            labelSearch = new Label();
             labelProgression = new Label();
             listBoxSearch = new ListBox();
             labelMain = new Label();
             labelView = new Label();
-            labelSearch = new Label();
-            labelViewAll = new Label();
+            buttonEmail = new Button();
             panelEdit.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -464,6 +465,32 @@
             panel2.Size = new Size(490, 465);
             panel2.TabIndex = 29;
             // 
+            // labelViewAll
+            // 
+            labelViewAll.AutoSize = true;
+            labelViewAll.BackColor = Color.Transparent;
+            labelViewAll.FlatStyle = FlatStyle.Popup;
+            labelViewAll.Font = new Font("Courier New", 15F);
+            labelViewAll.ForeColor = SystemColors.ButtonFace;
+            labelViewAll.Location = new Point(250, 157);
+            labelViewAll.Name = "labelViewAll";
+            labelViewAll.Size = new Size(163, 29);
+            labelViewAll.TabIndex = 34;
+            labelViewAll.Text = "All Chords";
+            // 
+            // labelSearch
+            // 
+            labelSearch.AutoSize = true;
+            labelSearch.BackColor = Color.Transparent;
+            labelSearch.FlatStyle = FlatStyle.Popup;
+            labelSearch.Font = new Font("Courier New", 15F);
+            labelSearch.ForeColor = SystemColors.ButtonFace;
+            labelSearch.Location = new Point(250, 53);
+            labelSearch.Name = "labelSearch";
+            labelSearch.Size = new Size(103, 29);
+            labelSearch.TabIndex = 33;
+            labelSearch.Text = "Search";
+            // 
             // labelProgression
             // 
             labelProgression.AutoSize = true;
@@ -514,31 +541,19 @@
             labelView.TabIndex = 31;
             labelView.Text = "View Form";
             // 
-            // labelSearch
+            // buttonEmail
             // 
-            labelSearch.AutoSize = true;
-            labelSearch.BackColor = Color.Transparent;
-            labelSearch.FlatStyle = FlatStyle.Popup;
-            labelSearch.Font = new Font("Courier New", 15F);
-            labelSearch.ForeColor = SystemColors.ButtonFace;
-            labelSearch.Location = new Point(250, 53);
-            labelSearch.Name = "labelSearch";
-            labelSearch.Size = new Size(103, 29);
-            labelSearch.TabIndex = 33;
-            labelSearch.Text = "Search";
-            // 
-            // labelViewAll
-            // 
-            labelViewAll.AutoSize = true;
-            labelViewAll.BackColor = Color.Transparent;
-            labelViewAll.FlatStyle = FlatStyle.Popup;
-            labelViewAll.Font = new Font("Courier New", 15F);
-            labelViewAll.ForeColor = SystemColors.ButtonFace;
-            labelViewAll.Location = new Point(250, 157);
-            labelViewAll.Name = "labelViewAll";
-            labelViewAll.Size = new Size(163, 29);
-            labelViewAll.TabIndex = 34;
-            labelViewAll.Text = "All Chords";
+            buttonEmail.BackColor = Color.CornflowerBlue;
+            buttonEmail.FlatStyle = FlatStyle.Popup;
+            buttonEmail.Font = new Font("Courier New", 12F);
+            buttonEmail.ForeColor = Color.WhiteSmoke;
+            buttonEmail.Location = new Point(532, 607);
+            buttonEmail.Name = "buttonEmail";
+            buttonEmail.Size = new Size(238, 41);
+            buttonEmail.TabIndex = 32;
+            buttonEmail.Text = "EMAIL";
+            buttonEmail.UseVisualStyleBackColor = false;
+            buttonEmail.Click += buttonEmail_Click;
             // 
             // MainDashboard
             // 
@@ -547,6 +562,7 @@
             BackgroundImage = Properties.Resources.MainDashBoard;
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(1062, 673);
+            Controls.Add(buttonEmail);
             Controls.Add(labelView);
             Controls.Add(labelMain);
             Controls.Add(buttonExit);
@@ -626,5 +642,6 @@
         private Label labelView;
         private Label labelViewAll;
         private Label labelSearch;
+        private Button buttonEmail;
     }
 }
