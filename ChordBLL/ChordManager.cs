@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using ChordCommon;
+﻿using ChordCommon;
 using ChordDAL;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 
 namespace ChordBLL
 {
     public class ChordManager
     {
         ChordData chordData = new ChordData();
+
+        private readonly ChordEmail _chordemail;
+
+        public ChordManager (ChordEmail chordemail)
+        {
+            _chordemail = chordemail;
+        }
 
         public bool AddChord(string name, string type, string notes)
         {
@@ -276,9 +284,7 @@ namespace ChordBLL
                 progressionText +
                 "\nThis progression was created by the Musical Chord Application.";
 
-            ChordEmail email = new ChordEmail();
-            email.SendEmail("user@examplemail.com", "Generated Chord Progression", body);
-
+            _chordemail.SendEmail("user@examplemail.com", "Generated Chord Progression", body);
             return true;
         }
 

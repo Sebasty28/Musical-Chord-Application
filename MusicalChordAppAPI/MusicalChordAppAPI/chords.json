@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "C",
+    "Type": "MAJOR",
+    "Notes": "C-E-G"
+  },
+  {
+    "Name": "G",
+    "Type": "MAJOR",
+    "Notes": "G-B-D"
+  },
+  {
+    "Name": "A",
+    "Type": "MAJOR",
+    "Notes": "A-C#-E"
+  },
+  {
+    "Name": "GB",
+    "Type": "MAJOR",
+    "Notes": "GB-BB-DB"
+  }
+]

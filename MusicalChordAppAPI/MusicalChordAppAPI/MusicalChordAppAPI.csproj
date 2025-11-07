@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ChordBLL\ChordBLL.csproj" />
+    <ProjectReference Include="..\..\ChordCommon\ChordCommon.csproj" />
+    <ProjectReference Include="..\..\ChordDAL\ChordDAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="ChordBLL">
       <HintPath>..\..\ChordBLL\bin\Debug\net8.0\ChordBLL.dll</HintPath>
     </Reference>

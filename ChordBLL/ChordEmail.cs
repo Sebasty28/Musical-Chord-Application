@@ -1,21 +1,33 @@
-﻿using System;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Configuration;
+using MimeKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MailKit.Net.Smtp;
-using MimeKit;
 
 namespace ChordBLL
 {
-    class ChordEmail
+    public class ChordEmail
     {
+        private readonly IConfiguration _configuration;
+
+        public ChordEmail(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void SendEmail(string toEmail, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Musical Chord Application", "no-reply@musicalchordapp.com"));
+            message.From.Add(new MailboxAddress(
+                _configuration["EmailSettings:FromName"],
+                _configuration["EmailSettings:FromEmail"]
+            ));
             message.To.Add(new MailboxAddress("User", toEmail));
-            message.Subject = "Chord Progression";
+            message.Subject = subject;
             message.Body = new TextPart("plain")
             {
                 Text = body
@@ -23,15 +35,17 @@ namespace ChordBLL
 
             using (var client = new SmtpClient())
             {
-                var smtpHost = "sandbox.smtp.mailtrap.io";
-                var smtpPort = 25;
-                var tls = MailKit.Security.SecureSocketOptions.StartTls;
-                client.Connect(smtpHost, smtpPort, tls);
+                client.Connect(
+                    _configuration["EmailSettings:SmtpHost"],
+                    int.Parse(_configuration["EmailSettings:SmtpPort"]),
+                    SecureSocketOptions.StartTls
+                );
 
-                var smtpUsername = "dcc2c311f42c4a";
-                var smtpPassword = "10e29fa88509e5";
+                client.Authenticate(
+                    _configuration["EmailSettings:Username"],
+                    _configuration["EmailSettings:Password"]
+                );
 
-                client.Authenticate(smtpUsername, smtpPassword);
                 client.Send(message);
                 client.Disconnect(true);
             }
